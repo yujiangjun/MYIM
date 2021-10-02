@@ -5,8 +5,8 @@
       <template #title>
         <van-row>
           <van-col :span="24">
-            <span v-if="item.direct == 0" class="chat_content_float">
-              <b>{{ my.nickName }}</b>
+            <span v-if="item.msgDirect == 1" class="chat_content_float">
+              <b>我</b>
             </span>
             <span v-else class="chat_content_float"
               ><b>{{ friend.nickName }}</b></span
@@ -49,6 +49,9 @@ export default {
     return {
       friend: {},
       my: {},
+      myId:this.$route.query.myid,
+      friendId:this.$route.query.friendId,
+      friendName:this.$route.query.friendName,
       messages: [],
       inputMes: "",
       socket: "",
@@ -70,10 +73,10 @@ export default {
         this.my = resp.data;
       }
     );
-    //   this.init();
+    this.init();
   },
   mounted() {
-    this.init();
+    // this.init();
   },
   methods: {
     back() {
@@ -95,6 +98,13 @@ export default {
     },
     open() {
       console.log("socket连接成功");
+      let registerMsg = {
+        myId: this.myId,
+        msgType: 6,
+      };
+      console.log("加入聊天");
+      console.log(registerMsg);
+      this.socket.send(encodeMessage(registerMsg));
     },
     error(e) {
       console.log("连接错误,cause:" + JSON.stringify(e));
@@ -105,12 +115,15 @@ export default {
     },
     send() {
       this.sendMsg = {
-        myId: 1,
-        myName: "raytine",
-        friendId: 2,
-        friendName: "ss",
+        myId: this.my.userId,
+        myName: this.my.nickName,
+        friendId: this.friend.userId,
+        friendName: this.friend.nickName,
         content: this.inputMes,
+        msgDirect: 1,
       };
+      console.log("发送消息");
+      console.log(this.sendMsg);
       this.socket.send(encodeMessage(this.sendMsg));
       this.inputMes = "";
     },
@@ -121,8 +134,15 @@ export default {
         reader.onload = () => {
           const buf = new Uint8Array(reader.result);
           let result = decodeMessage(buf);
-          result.receiveTime = this.$moment(new Date()).format("YYYY-MM-DD");
-          this.messages.push(result);
+          if (result.msgType === 6) {
+            console.log("注册登录");
+            console.log(result);
+          } else {
+            result.receiveTime = this.$moment(new Date()).format("YYYY-MM-DD");
+            console.log("接收消息");
+            console.log(result);
+            this.messages.push(result);
+          }
         };
       }
     },
