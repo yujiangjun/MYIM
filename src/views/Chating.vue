@@ -1,8 +1,20 @@
 <template>
-  <div>
-    <van-nav-bar :title="friend.nickName" left-arrow @click-left="back" />
-    <van-cell-group class="chat_content">
-      <van-cell v-for="(item, index) in messages" :key="index">
+  <div class="warp">
+    <div class="header">
+      <van-row>
+        <van-col :span="24">
+          <van-nav-bar :title="friend.nickName" left-arrow @click-left="back" />
+        </van-col>
+      </van-row>
+    </div>
+    <div class="chat_content">
+      <!-- <van-row>
+        <van-col :span="24">
+          <van-cell-group>
+          </van-cell-group>
+        </van-col>
+      </van-row> -->
+      <van-cell v-for="(item, index) in messages" :key="index" style="background:#eeeee6;">
         <template #title>
           <van-row>
             <van-col :span="24">
@@ -33,14 +45,20 @@
           </van-row>
         </template>
       </van-cell>
-    </van-cell-group>
-    <van-sticky :offset-bottom="50" position="bottom">
-      <van-field v-model="inputMes" placeholder="请输入...">
-        <template #button>
-          <van-button size="small" type="primary" @click="send">发送</van-button>
-        </template>
-      </van-field>
-    </van-sticky>
+    </div>
+    <div class="footer">
+      <van-row>
+        <van-col :span="24">
+          <van-field v-model="inputMes" class="input_field" placeholder="请输入..." @keydown.enter="send">
+            <template #button>
+              <van-button size="small" type="primary" @click="send">发送</van-button>
+            </template>
+          </van-field>
+          <!-- <van-sticky :offset-bottom="50" position="bottom">
+          </van-sticky> -->
+        </van-col>
+      </van-row>
+    </div>
   </div>
 </template>
 
@@ -48,7 +66,7 @@
 import Api from '../utils/api'
 import { encodeMessage, decodeMessage } from '../../json-module'
 export default {
-  data() {
+  data () {
     return {
       friend: {},
       my: {},
@@ -61,7 +79,7 @@ export default {
       sendMsg: {}
     }
   },
-  created() {
+  created () {
     this.friend = {
       id: this.$route.query.friendId,
       name: this.$route.query.friendName
@@ -78,18 +96,18 @@ export default {
     )
     this.init()
   },
-  mounted() {
+  mounted () {
     // this.init();
   },
-  unmounted() {
+  unmounted () {
     // 销毁监听
     this.socket.onclose = this.close
   },
   methods: {
-    back() {
+    back () {
       this.$router.go(-1)
     },
-    init() {
+    init () {
       if (typeof WebSocket === 'undefined') {
         alert('您的浏览器不支持socket')
       } else {
@@ -103,7 +121,7 @@ export default {
         this.socket.onmessage = this.getWebSocketMsg
       }
     },
-    open() {
+    open () {
       console.log('socket连接成功')
       const registerMsg = {
         myId: this.myId,
@@ -113,28 +131,29 @@ export default {
       console.log(registerMsg)
       this.socket.send(encodeMessage(registerMsg))
     },
-    error(e) {
+    error (e) {
       console.log('连接错误,cause:' + JSON.stringify(e))
       this.close()
     },
-    close() {
+    close () {
       console.log('socket已经关闭')
     },
-    send() {
+    send () {
       this.sendMsg = {
         myId: this.my.userId,
         myName: this.my.nickName,
         friendId: this.friend.userId,
         friendName: this.friend.nickName,
         content: this.inputMes,
-        msgDirect: 1
+        msgDirect: 1,
+        chatType: 1
       }
       console.log('发送消息')
       console.log(this.sendMsg)
       this.socket.send(encodeMessage(this.sendMsg))
       this.inputMes = ''
     },
-    getWebSocketMsg(msg) {
+    getWebSocketMsg (msg) {
       if (typeof msg !== 'undefined') {
         const reader = new FileReader()
         reader.readAsArrayBuffer(msg.data)
@@ -158,12 +177,35 @@ export default {
 </script>
 
 <style>
+.warp{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  /*布局方向是垂直的*/
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.header, .footer {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+  }
 .chat_content {
-  min-height: 500px;
-  height: auto !important;
+  min-height: 600px;
   height: 100px;
   width: 100%;
-  /* background:#FFF000; */
+  -webkit-box-flex: 1;
+  /* flex: 1; */
+  /* overflow: auto; */
+  flex-grow:2;
+  overflow-y:auto;
+  overflow-x:hidden;
+  background:#eeeee6;
 }
 .chat_content_float {
   float: left;
@@ -174,5 +216,9 @@ export default {
 .mes_back {
   background: rgb(97, 190, 139);
   color: black;
+}
+.input_field{
+  border: 1px;
+  border-color: #eeeee6;
 }
 </style>

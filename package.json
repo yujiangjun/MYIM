@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "proto-compile": "npx pbjs --es6 json-module -w commonjs -o src/protobuf/proto.js  src/protobuf/message.proto"
   },
   "dependencies": {
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
+    "moment": "^2.29.1",
     "vant": "^3.2.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
@@ -23,6 +25,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
+    "eslint-plugin-vue-libs": "^4.0.0",
     "pbjs": "0.0.14",
     "protobufjs": "^6.11.2"
   },

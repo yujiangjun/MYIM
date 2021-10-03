@@ -15,25 +15,25 @@
 </template>
 
 <script>
-import Api from "../utils/api";
+import Api from '../utils/api'
 export default {
-    data(){
-        return {
-            friends:[],
-            myId:this.$route.query.myId
-        }
-    },
-    created(){
-        this.$get(Api.getMyFriends+"?myUserId=" + this.myId).then(resp=>{
-            this.friends=resp.data
-        })
-    },
-    methods:{
-        chat(item){
-            console.log(item)
-            this.$router.push({path:'chating',query:{myid:this.myId,friendId:item.userId,friendName:item.nickName}})
-        }
+  data () {
+    return {
+      friends: [],
+      myId: this.$route.query.myId
     }
+  },
+  created () {
+    this.$get(Api.getMyFriends + '?myUserId=' + this.myId).then(resp => {
+      this.friends = resp.data
+    })
+  },
+  methods: {
+    chat (item) {
+      console.log(item)
+      this.$router.push({ path: 'chating', query: { myid: this.myId, friendId: item.userId, friendName: item.nickName }})
+    }
+  }
 }
 </script>
 

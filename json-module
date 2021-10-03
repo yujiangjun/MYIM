@@ -53,6 +53,13 @@ function _encodeMessage(message, bb) {
     writeVarint32(bb, 56);
     writeVarint64(bb, intToLong($msgDirect));
   }
+
+  // optional int32 chatType = 8;
+  let $chatType = message.chatType;
+  if ($chatType !== undefined) {
+    writeVarint32(bb, 64);
+    writeVarint64(bb, intToLong($chatType));
+  }
 }
 
 export function decodeMessage(binary) {
@@ -108,6 +115,12 @@ function _decodeMessage(bb) {
       // optional int32 msgDirect = 7;
       case 7: {
         message.msgDirect = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 chatType = 8;
+      case 8: {
+        message.chatType = readVarint32(bb);
         break;
       }
 
