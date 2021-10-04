@@ -10,7 +10,14 @@
         <span class="name_class">新朋友</span>
       </template>
       <template #value>
-        <van-button type="primary" size="small">查看</van-button>
+        <van-button
+          type="primary"
+          size="small"
+          round
+          @click="getMyFriendApply"
+        >
+          查看
+        </van-button>
       </template>
       <template #icon>
         <van-icon 
@@ -71,6 +78,9 @@ export default {
         },
       });
     },
+    getMyFriendApply(){
+      this.$router.push({path:'myFriendApply',query:{myid:this.myId}})
+    }
   },
 };
 </script>
@@ -79,5 +89,9 @@ export default {
 .name_class {
   font-size: 16px;
   margin-left: 2%;
+}
+.cell_row{
+  display: flex;
+  align-items: center;
 }
 </style>

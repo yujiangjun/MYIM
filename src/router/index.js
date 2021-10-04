@@ -56,6 +56,11 @@ const routes = [
     path:'/addFriend',
     name:'AddFriend',
     component:()=>import('../views/AddFriend.vue')
+  },
+  {
+    path:'/myFriendApply',
+    name:'MyFriendApply',
+    component:()=>import('../views/MyFriendApply.vue')
   }
 ]
 

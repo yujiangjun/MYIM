@@ -4,5 +4,8 @@ export default {
   getDetail: 'getDetail',
   getMyChatList: 'getMyChatList',
   deleteMyChat: 'deleteMyChat',
-  checkFriendOrGroupExist: 'relation/checkFriendOrGroupExist'
+  addUser: 'relation/addUser',
+  getMyFriendApplyRecord: 'relation/getMyFriendApplyRecord',
+  passAddFriend: 'relation/passAddFriend',
+  rejectAddFriend: 'relation/rejectAddFriend',
 }

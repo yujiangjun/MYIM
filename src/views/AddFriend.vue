@@ -15,15 +15,18 @@
                   v-model="imNumber"
                   type="digit"
                   label="IM号"
+                  @update:model-value="updateImNo"
                 />
               </van-col>
             </van-row>
             <van-row>
               <van-col span="24">
                 <van-button
+                  
                   round
                   type="primary"
                   style="width:90%"
+                  :disabled="enableAddUser"
                   @click="addUser"
                 >
                   添加好友
@@ -67,11 +70,12 @@ export default {
             imNumber:null,
             groupNumber:null,
             tagId:0,
+            enableAddUser:true,
             chatType:{
                 single:1,
                 group:2
             },
-            myid:this.$route.query.myId
+            myid:this.$route.query.myid
         }
     },
     methods:{
@@ -80,17 +84,26 @@ export default {
         },
         addUser(){
             console.log('添加好友')
-            this.$get(API.checkFriendOrGroupExist,{
-                friendId:this.imNumber,
+            this.imNumber=null
+            this.$get(API.addUser,{
+                myId: this.myid,
+                friendName:this.imNumber,
                 chatType:this.chatType.single
             }).then((resp)=>{
-                let isExist=resp.data
-                if(!isExist){
-                    this.$toast.fail('用户不存在')
+                let code=resp.code
+                if(code!=200){
+                    this.$toast.fail(resp.message)
                 }else{
                     this.$toast.success('已向对方发送好友申请')
                 }
             })
+        },
+        updateImNo(){
+          if(this.imNumber){
+            this.enableAddUser=false
+          }else{
+            this.enableAddUser=true
+          }
         }
     }
 }
