@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {Toast} from 'vant'
 
 let devBasePath = "http://localhost:8888/api/"
 axios.defaults.timeout = 5000
@@ -57,7 +58,12 @@ export function get(url, params = {}, headers = {}) {
                 headers: headers
             })
             .then(response => {
-                resolve(response.data);
+                if(response.data.code!=200){
+                    console.log(response)
+                    Toast.fail(response.data.message)
+                }else{
+                    resolve(response.data);
+                }
             })
             .catch(err => {
                 reject(err)
@@ -69,7 +75,11 @@ export function post(url, data = {}) {
     return new Promise((resolve, reject) => {
         axios.post(url, data)
             .then(response => {
-                resolve(response.data);
+                if(response.data.code!=200){
+                    Toast.fail(response.data.message)
+                }else{
+                    resolve(response.data);
+                }
             }, err => {
                 reject(err)
             })

@@ -1,5 +1,6 @@
 export default {
   login: 'login',
+  register: 'register',
   getMyFriends: 'getMyFriends',
   getDetail: 'getDetail',
   getMyChatList: 'getMyChatList',

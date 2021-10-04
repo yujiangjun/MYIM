@@ -61,6 +61,11 @@ const routes = [
     path:'/myFriendApply',
     name:'MyFriendApply',
     component:()=>import('../views/MyFriendApply.vue')
+  },
+  {
+    path:'/userRegister',
+    name:'UserRegister',
+    component:()=>import('../views/UserRegister.vue')
   }
 ]
 
