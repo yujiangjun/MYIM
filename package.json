@@ -9,9 +9,11 @@
     "proto-compile": "npx pbjs --es6 json-module -w commonjs -o src/protobuf/proto.js  src/protobuf/message.proto"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^4.32.0",
     "axios": "^0.21.4",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
+    "typescript": "^4.4.3",
     "vant": "^3.2.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"

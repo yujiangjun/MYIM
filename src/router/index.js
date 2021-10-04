@@ -51,6 +51,11 @@ const routes = [
     path:'/chating',
     name:'Chating',
     component:()=>import('../views/Chating.vue')
+  },
+  {
+    path:'/addFriend',
+    name:'AddFriend',
+    component:()=>import('../views/AddFriend.vue')
   }
 ]
 

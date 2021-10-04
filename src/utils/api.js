@@ -3,5 +3,6 @@ export default {
   getMyFriends: 'getMyFriends',
   getDetail: 'getDetail',
   getMyChatList: 'getMyChatList',
-  deleteMyChat: 'deleteMyChat'
+  deleteMyChat: 'deleteMyChat',
+  checkFriendOrGroupExist: 'relation/checkFriendOrGroupExist'
 }
